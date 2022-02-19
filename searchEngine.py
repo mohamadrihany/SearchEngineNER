@@ -9,6 +9,7 @@ from IPython.core.display import display, HTML
 import time
 import json
 import sys
+import pickle
 
 
 
@@ -17,11 +18,10 @@ if __name__ == "__main__":
     #print(query)
     nlp = spacy.load("fr_core_news_lg")
     df = pd.read_csv('lessurligneurs.csv')
-    tok_text=[] 
-    for doc in tqdm(nlp.pipe(df.NER.str.lower().values, disable=["tagger", "parser","ner"])):
-        tok = [t.text for t in doc if t.is_alpha]
-        tok_text.append(tok)
-        
+    
+    with open("toktext", 'rb') as f:
+        tok_text = pickle.load(f)
+      
     bm25 = BM25Okapi(tok_text)
 
     #query = "Convention France macron"
